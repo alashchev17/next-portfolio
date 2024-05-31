@@ -1,0 +1,7 @@
+query Skillsets {
+  skillsets {
+    id
+    name
+    description
+  }
+}
