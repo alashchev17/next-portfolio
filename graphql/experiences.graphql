@@ -1,0 +1,9 @@
+query Experiences {
+  experiences {
+    name
+    description
+    dateStart
+    dateOver
+    location
+  }
+}

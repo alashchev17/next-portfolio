@@ -3,10 +3,18 @@ query AllData {
     id
     name
     description
+    link
   }
   skillsets {
     id
     name
     description
+  }
+  experiences {
+    name
+    description
+    location
+    dateStart
+    dateOver
   }
 }

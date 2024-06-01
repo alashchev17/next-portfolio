@@ -3,5 +3,6 @@ query Projects {
     id
     name
     description
+    link
   }
 }
