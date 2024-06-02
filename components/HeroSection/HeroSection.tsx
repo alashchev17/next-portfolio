@@ -23,7 +23,7 @@ export const HeroSection = () => {
   }
 
   return (
-    <section className="w-full flex max-sm:flex-col sm:flex-col lg:flex-row max-sm:items-start sm:items-start md:items-center max-sm:gap-8 gap-20 justify-center">
+    <section className="w-full flex max-sm:flex-col sm:flex-col lg:flex-row max-sm:items-start sm:items-start md:items-center max-sm:gap-8 gap-20 justify-between">
       <Drawer>
         <DrawerContent>
           <div className="mx-auto w-full max-w-sm">

@@ -9,9 +9,11 @@ export default async function Home() {
   const data = response.data
   return (
     <main className="px-6 py-6 bg-zinc-50 dark:bg-zinc-800 dark:text-zinc-50 min-h-dvh">
-      <HeroSection />
-      <SkillsetSection skillsets={data.skillsets} />
-      <ProjectSection projects={data.projects} />
+      <div className="container">
+        <HeroSection />
+        <SkillsetSection skillsets={data.skillsets} />
+        <ProjectSection projects={data.projects} />
+      </div>
     </main>
   )
 }
