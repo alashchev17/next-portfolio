@@ -5,6 +5,7 @@ import { Button } from '@/components/UI/Button'
 import { Tag } from '@/components/UI/Tag'
 
 import { sdk } from '@/lib/client'
+import { TransitionLink } from '@/components/TransitionLink'
 
 interface ProjectPageProps {
   params: {
@@ -61,7 +62,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           <p className="text-zinc-500">{project.details}</p>
         </div>
 
-        <div className="mb-8">
+        <div className="mb-8 flex gap-3">
+          <TransitionLink href="/">
+            <Button variant={'default'}>Go back</Button>
+          </TransitionLink>
           <Button variant={'default'}>
             <a href={project.link!} target="_blank">
               Visit Project
