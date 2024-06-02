@@ -11,7 +11,7 @@ import { TransitionLink } from '@/components/TransitionLink'
 export const Header = () => {
   const pathname = usePathname()
   return (
-    <header className="px-6 py-5 bg-zinc-50 dark:bg-zinc-800 dark:text-zinc-50 border-b">
+    <header className="py-5 bg-zinc-50 dark:bg-zinc-800 dark:text-zinc-50 border-b">
       <div className="container flex items-center justify-between ">
         {pathname !== '/' ? (
           <TransitionLink href="/">

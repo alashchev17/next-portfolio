@@ -25,7 +25,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const data = response.data
   const project = data.projects[0]
   return (
-    <main className="px-6 py-6 bg-zinc-50 dark:bg-zinc-800 dark:text-zinc-50 min-h-dvh">
+    <main className="py-6 bg-zinc-50 dark:bg-zinc-800 dark:text-zinc-50 min-h-dvh">
       <div className="container">
         <div className="mb-8">
           <Heading level={1} className="mb-2">
