@@ -19,13 +19,11 @@ import { postMessage } from '@/lib/postMessage'
 export const HeroSection = () => {
   const handleQueryExecution = async (values: { message: string; email: string; name: string }) => {
     'use server'
-    console.log(`[SERVER]: Values from form: ${JSON.stringify(values)}`)
     const response = await postMessage(values)
-    console.log(`[SERVER]: Response from API: ${JSON.stringify(response)}`)
   }
 
   return (
-    <section className="w-full flex items-center gap-20 justify-center">
+    <section className="w-full flex max-sm:flex-col sm:flex-col lg:flex-row max-sm:items-start sm:items-start md:items-center max-sm:gap-8 gap-20 justify-center">
       <Drawer>
         <DrawerContent>
           <div className="mx-auto w-full max-w-sm">
@@ -44,7 +42,7 @@ export const HeroSection = () => {
           </div>
         </DrawerContent>
 
-        <div className="flex flex-col gap-3 max-w-[500px] items-start">
+        <div className="flex flex-col gap-3 max-w-[600px] items-start">
           <Heading level={1}>
             Hey there! My name is <span className="text-purple-700 dark:text-purple-600 border-b-2 border-purple-600">Andrii Lashchov</span>
           </Heading>
@@ -61,9 +59,9 @@ export const HeroSection = () => {
           <Image
             src="/heroImage.jpg"
             alt="Hero Section Image"
-            width={500}
+            width={700}
             height={500}
-            className="h-[500px] w-[500px] rounded-2xl object-cover object-center"
+            className="max-sm:h-[auto] h-[500px] w-[700px] rounded-2xl object-cover object-center"
           />
         </div>
       </Drawer>

@@ -4,11 +4,28 @@ query AllData {
     name
     description
     link
+    cover {
+      fileName
+      url
+      width
+      height
+    }
+    tags {
+      name
+      id
+    }
+    details
   }
   skillsets {
     id
     name
     description
+    iconImage {
+      url
+      fileName
+      width
+      height
+    }
   }
   experiences {
     name

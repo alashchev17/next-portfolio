@@ -1,9 +1,6 @@
-query Projects {
-  projects {
-    id
+query getProjectByProjectName($name: String!) {
+  projects(where: { name: $name }) {
     name
-    description
-    link
     cover {
       fileName
       url
@@ -11,9 +8,11 @@ query Projects {
       height
     }
     tags {
-      name
       id
+      name
     }
+    description
+    link
     details
   }
 }

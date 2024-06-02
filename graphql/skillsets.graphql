@@ -3,5 +3,9 @@ query Skillsets {
     id
     name
     description
+    iconImage {
+      url
+      fileName
+    }
   }
 }

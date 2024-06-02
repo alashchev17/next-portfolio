@@ -8,7 +8,6 @@ import { Button } from '@/components/UI/Button'
 
 export const ModeToggler = () => {
   const { theme, setTheme } = useTheme()
-  console.log(theme)
 
   const handleThemeChange = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark')

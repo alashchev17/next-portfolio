@@ -1,22 +1,23 @@
+import React from 'react'
+
 interface HeadingProps {
   level: 1 | 2 | 3 | 4 | 5 | 6
+  className?: string
   children: React.ReactNode
 }
 
-export const Heading = ({ children, level }: HeadingProps) => {
-  if (level === 1) {
-    return <h1 className="leading-tight text-2xl md:text-5xl md:leading-tight font-bold">{children}</h1>
-  } else if (level === 2) {
-    return <h2 className="leading-normal text-xl md:text-2xl font-bold">{children}</h2>
-  } else if (level === 3) {
-    return <h3 className="leading-normal text-lg font-bold">{children}</h3>
-  } else if (level === 4) {
-    return <h4 className="leading-normal text-base font-bold">{children}</h4>
-  } else if (level === 5) {
-    return <h5 className="leading-normal text-sm font-bold">{children}</h5>
-  } else if (level === 6) {
-    return <h6 className="leading-normal text-sm font-bold">{children}</h6>
-  } else {
-    return <h1 className="leading-normal text-2xl md:text-5xl md:leading-normal font-bold">{children}</h1>
-  }
+const headingStyles = {
+  1: 'text-4xl md:text-5xl lg:text-6xl leading-tight font-bold',
+  2: 'text-3xl md:text-4xl lg:text-5xl leading-snug font-bold',
+  3: 'text-2xl md:text-3xl lg:text-4xl leading-snug font-semibold',
+  4: 'text-xl md:text-2xl lg:text-3xl leading-snug font-semibold',
+  5: 'text-lg md:text-xl lg:text-2xl leading-relaxed font-medium',
+  6: 'text-base md:text-lg lg:text-xl leading-relaxed font-medium',
+}
+
+export const Heading = ({ children, level, className = '' }: HeadingProps) => {
+  const Tag = `h${level}` as keyof JSX.IntrinsicElements
+  const headingClassName = headingStyles[level]
+
+  return <Tag className={`${headingClassName} ${className}`}>{children}</Tag>
 }
