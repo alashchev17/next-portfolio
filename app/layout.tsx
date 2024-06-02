@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils'
 
 import { ThemeProvider } from '@/components/Theme'
 import { Header } from '@/components/UI/Header'
+import { Toaster } from '@/components/UI/Toaster'
 
 const RobotoFlexFont = Roboto_Flex({
   subsets: ['latin'],
@@ -29,6 +30,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <Header />
           {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
