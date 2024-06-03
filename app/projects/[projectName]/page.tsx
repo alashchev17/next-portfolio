@@ -24,6 +24,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const response = await sdk.getProjectByProjectName({ name: decodeURIComponent(params.projectName) })
   const data = response.data
   const project = data.projects[0]
+
   return (
     <main className="py-6 pt-[calc(1.5rem+80px)] bg-zinc-50 dark:bg-zinc-800 dark:text-zinc-50 min-h-dvh">
       <div className="container">
