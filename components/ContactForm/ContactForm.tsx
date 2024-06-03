@@ -50,7 +50,7 @@ export const ContactForm = ({ handleFinish }: ContactFormProps) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onFormSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onFormSubmit)} className="space-y-8" autoComplete="off" autoCapitalize="off" autoCorrect="off">
         <FormField
           control={form.control}
           name="email"
