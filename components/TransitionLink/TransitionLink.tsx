@@ -23,7 +23,11 @@ export const TransitionLink = ({
   }
 
   if (children) {
-    return <div onClick={handleClick} suppressHydrationWarning>{children}</div>
+    return (
+      <div className="cursor-pointer" onClick={handleClick} suppressHydrationWarning>
+        {children}
+      </div>
+    )
   }
 
   return (
