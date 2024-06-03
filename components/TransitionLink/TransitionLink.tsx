@@ -23,11 +23,11 @@ export const TransitionLink = ({
   }
 
   if (children) {
-    return <button onClick={handleClick}>{children}</button>
+    return <div onClick={handleClick} suppressHydrationWarning>{children}</div>
   }
 
   return (
-    <button className={className} onClick={handleClick}>
+    <button className={className} onClick={handleClick} suppressHydrationWarning>
       {label}
     </button>
   )
