@@ -6,7 +6,7 @@ import { Roboto_Flex } from 'next/font/google'
 import { cn } from '@/lib/utils'
 
 import { ThemeProvider } from '@/components/Theme'
-import { Header } from '@/components/UI/Header'
+import { HeaderWrapper } from '@/components/UI/Header'
 import { Toaster } from '@/components/UI/Toaster'
 
 const RobotoFlexFont = Roboto_Flex({
@@ -27,7 +27,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={cn('min-h-screen bg-background font-sans antialiased', RobotoFlexFont.variable)}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-          <Header />
+          <HeaderWrapper />
           {children}
           <Toaster />
         </ThemeProvider>
