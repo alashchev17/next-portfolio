@@ -42,7 +42,7 @@ export const ContactForm = ({ handleFinish }: ContactFormProps) => {
       action: {
         label: 'Okay',
         onClick: () => {
-          console.log('Clicked')
+          toast.dismiss()
         },
       },
     })

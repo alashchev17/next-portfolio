@@ -7,10 +7,9 @@ import { usePathname } from 'next/navigation'
 import { ModeToggler } from '@/components/Theme'
 import { Heading } from '@/components/UI/Heading'
 import { TransitionLink } from '@/components/TransitionLink'
-import { useSession, signOut } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import { Button } from '../Button'
 import { SignOut } from '@/components/SignOut'
-import { useEffect } from 'react'
 
 type HeaderProps = {
   callbackBaseUrl: string
@@ -21,8 +20,6 @@ export const Header = ({ callbackBaseUrl }: HeaderProps) => {
   const session = useSession()
 
   const callbackUrl = callbackBaseUrl + pathname
-
-  console.log(session)
 
   return (
     <header className="w-full z-10 fixed py-5 bg-zinc-50 dark:bg-zinc-800 dark:text-zinc-50 border-b dark:border-zinc-600">

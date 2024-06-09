@@ -15,7 +15,7 @@ export function generateMetadata(): Metadata {
   }
 }
 
-export default async function DashboardProjects() {
+export default async function DashboardSkills() {
   const response = await sdk.Projects()
   const projects = response.data.projects
 

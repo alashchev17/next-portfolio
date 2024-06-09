@@ -38,7 +38,6 @@ export const SignInForm = ({ handleFinish }: SignInFormProps) => {
   const onFormSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsFormSending(true)
     const response = await handleFinish(values)
-    console.log(response)
     if (!response) {
       form.reset()
       setIsFormSending(false)

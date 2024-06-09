@@ -1,17 +1,5 @@
-import Image from 'next/image'
-
-import { Heading } from '@/components/UI/Heading'
 import { Button } from '@/components/UI/Button'
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from '@/components/UI/Drawer'
+import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from '@/components/UI/Drawer'
 import { ContactForm } from '@/components/ContactForm'
 
 import { postMessage } from '@/lib/postMessage'
@@ -20,7 +8,7 @@ import { HeroSectionContent } from './HeroSectionContent'
 export const HeroSection = () => {
   const handleQueryExecution = async (values: { message: string; email: string; name: string }) => {
     'use server'
-    const response = await postMessage(values)
+    await postMessage(values)
   }
 
   return (
