@@ -1,27 +1,18 @@
 'use client'
 
-import { useEffect } from 'react'
-import { SkillsetItem } from './SkillsetItem'
-import { Heading } from '@/components/UI/Heading'
+import type { SkillsetsQuery } from '@/generated/graphql'
+
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/all'
 gsap.registerPlugin(ScrollTrigger)
 
+import { useEffect } from 'react'
+
+import { SkillsetItem } from './SkillsetItem'
+import { Heading } from '@/components/UI/Heading'
+
 interface SkillsetSectionProps {
-  skillsets: {
-    __typename?: 'Skillset' | undefined
-    id: string
-    name?: string | null | undefined
-    description?: string | null | undefined
-    iconImage?:
-      | {
-          __typename?: 'Asset' | undefined
-          url: string
-          fileName: string
-        }
-      | null
-      | undefined
-  }[]
+  skillsets: NonNullable<SkillsetsQuery['skillsets']>
 }
 
 export const SkillsetSection = ({ skillsets }: SkillsetSectionProps) => {

@@ -1,0 +1,7 @@
+mutation deleteSkillset($skillsetId: ID!) {
+  deleteSkillset(where: { id: $skillsetId }) {
+    id
+    name
+    description
+  }
+}

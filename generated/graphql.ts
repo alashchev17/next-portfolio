@@ -5985,6 +5985,13 @@ export type AllDataQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type AllDataQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', id: string, name?: string | null, description?: string | null, link?: string | null, details?: string | null, cover?: { __typename?: 'Asset', fileName: string, url: string, width?: number | null, height?: number | null } | null, tags: Array<{ __typename?: 'Tag', name?: string | null, id: string }> }>, skillsets: Array<{ __typename?: 'Skillset', id: string, name?: string | null, description?: string | null, iconImage?: { __typename?: 'Asset', url: string, fileName: string, width?: number | null, height?: number | null } | null }>, experiences: Array<{ __typename?: 'Experience', name?: string | null, description?: string | null, location?: string | null, dateStart?: any | null, dateOver?: any | null }> };
 
+export type DeleteSkillsetMutationVariables = Exact<{
+  skillsetId: Scalars['ID']['input'];
+}>;
+
+
+export type DeleteSkillsetMutation = { __typename?: 'Mutation', deleteSkillset?: { __typename?: 'Skillset', id: string, name?: string | null, description?: string | null } | null };
+
 export type ExperiencesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -6044,6 +6051,15 @@ export const AllDataDocument = gql`
     location
     dateStart
     dateOver
+  }
+}
+    `;
+export const DeleteSkillsetDocument = gql`
+    mutation deleteSkillset($skillsetId: ID!) {
+  deleteSkillset(where: {id: $skillsetId}) {
+    id
+    name
+    description
   }
 }
     `;
@@ -6118,6 +6134,7 @@ export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, str
 
 const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType, _variables) => action();
 const AllDataDocumentString = print(AllDataDocument);
+const DeleteSkillsetDocumentString = print(DeleteSkillsetDocument);
 const ExperiencesDocumentString = print(ExperiencesDocument);
 const GetProjectByProjectNameDocumentString = print(GetProjectByProjectNameDocument);
 const ProjectsDocumentString = print(ProjectsDocument);
@@ -6126,6 +6143,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
   return {
     AllData(variables?: AllDataQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: AllDataQuery; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<AllDataQuery>(AllDataDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'AllData', 'query', variables);
+    },
+    deleteSkillset(variables: DeleteSkillsetMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: DeleteSkillsetMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<DeleteSkillsetMutation>(DeleteSkillsetDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'deleteSkillset', 'mutation', variables);
     },
     Experiences(variables?: ExperiencesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: ExperiencesQuery; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<ExperiencesQuery>(ExperiencesDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Experiences', 'query', variables);

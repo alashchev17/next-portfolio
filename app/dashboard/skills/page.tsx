@@ -1,13 +1,13 @@
 import { redirect } from 'next/navigation'
 import type { Metadata } from 'next'
+import { headers } from 'next/headers'
 
 import { auth } from '@/auth'
 import { sdk } from '@/lib/client'
+import { users } from '@/database/users'
 
 import { Heading } from '@/components/UI/Heading'
-import { DashboardProject } from '@/components/Dashboard/DashboardProject'
-import { headers } from 'next/headers'
-import { users } from '@/database/users'
+import { DashboardSkillset } from '@/components/Dashboard/DashboardSkillset'
 
 export function generateMetadata(): Metadata {
   return {
@@ -16,8 +16,8 @@ export function generateMetadata(): Metadata {
 }
 
 export default async function DashboardSkills() {
-  const response = await sdk.Projects()
-  const projects = response.data.projects
+  const response = await sdk.Skillsets()
+  const skillsets = response.data.skillsets
 
   const session = await auth()
 
@@ -37,11 +37,11 @@ export default async function DashboardSkills() {
   return (
     <>
       <Heading level={6} className="py-4">
-        Existing projects
+        Existing skillsets
       </Heading>
-      <div className="flex flex-col gap-3 mb-4">
-        {projects.map((project) => (
-          <DashboardProject key={project.id} project={project} />
+      <div className="flex flex-wrap gap-3 mb-4">
+        {skillsets.map((skillset) => (
+          <DashboardSkillset key={skillset.id} skillset={skillset} />
         ))}
       </div>
     </>

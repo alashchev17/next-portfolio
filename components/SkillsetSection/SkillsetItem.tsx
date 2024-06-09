@@ -1,21 +1,9 @@
 import Image from 'next/image'
+import type { SkillsetsQuery } from '@/generated/graphql'
 import { Heading } from '../UI/Heading'
 
 interface SkillsetItemProps {
-  skillset: {
-    __typename?: 'Skillset' | undefined
-    id: string
-    name?: string | null | undefined
-    description?: string | null | undefined
-    iconImage?:
-      | {
-          __typename?: 'Asset' | undefined
-          url: string
-          fileName: string
-        }
-      | null
-      | undefined
-  }
+  skillset: NonNullable<SkillsetsQuery['skillsets']>[number]
 }
 
 export const SkillsetItem = ({ skillset }: SkillsetItemProps) => {
