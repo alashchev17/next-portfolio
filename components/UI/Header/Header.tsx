@@ -27,11 +27,11 @@ export const Header = () => {
         )}
         <div className="flex gap-4 items-center">
           {session.status === 'authenticated' && session.data.user?.email === 'andrew.lashchev15@gmail.com' && (
-            <TransitionLink href="/dashboard">
+            <Link href="/dashboard">
               <Button variant="outline" className="bg-zinc-50 dark:bg-zinc-900">
                 Dashboard
               </Button>
-            </TransitionLink>
+            </Link>
           )}
           <ModeToggler />
         </div>

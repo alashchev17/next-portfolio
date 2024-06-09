@@ -1,20 +1,25 @@
-import { auth } from '@/auth'
-import { SignOut } from '@/components/SignOut'
-import { redirect } from 'next/navigation'
+import { Heading } from '@/components/UI/Heading'
+import { Button } from '@/components/UI/Button'
+import Link from 'next/link'
+import { Session } from 'next-auth'
 
-export default async function DashboardPage() {
-  const session = await auth()
-  if (!session || session.user?.email !== 'andrew.lashchev15@gmail.com') {
-    redirect('/')
-  }
-
+export default async function DashboardPage({ session }: { session: Session }) {
   return (
-    <main className="py-6 pt-[calc(1.5rem+80px)] bg-zinc-50 dark:bg-zinc-800 dark:text-zinc-50 min-h-dvh">
-      <div className="container">
-        Dashboard
-        <pre>{JSON.stringify(session, null, 2)}</pre>
-        <SignOut />
+    <>
+      <Heading level={6} className="py-4 mb-4 border-b">
+        Signed in as{' '}
+        <span className="font-bold">
+          {session?.user?.email} {`(${session?.user?.name})`}
+        </span>
+      </Heading>
+      <div className="flex gap-3 pb-4 border-b mb-4">
+        <Link href="/dashboard/skills">
+          <Button variant="outline">Update skills</Button>
+        </Link>
+        <Link href="/dashboard/projects">
+          <Button variant="outline">Update projects</Button>
+        </Link>
       </div>
-    </main>
+    </>
   )
 }

@@ -9,7 +9,7 @@ export const SignOut = () => {
         await signOut()
       }}
     >
-      <Button type="submit" variant="outline">
+      <Button type="submit" variant="default">
         Sign Out
       </Button>
     </form>
