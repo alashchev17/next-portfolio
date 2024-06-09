@@ -8,6 +8,7 @@ interface TransitionLinkProps {
   label?: string
   className?: string
   children?: React.ReactNode
+  onClick?: () => void
 }
 
 export const TransitionLink = ({

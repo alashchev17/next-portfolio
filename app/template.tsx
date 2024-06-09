@@ -3,11 +3,14 @@
 import { useEffect } from 'react'
 
 import { animatePageIn } from '@/animations'
+import { usePathname } from 'next/navigation'
 
 export default function Template({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname()
+
   useEffect(() => {
     animatePageIn()
-  }, [])
+  }, [pathname])
 
   return (
     <div>

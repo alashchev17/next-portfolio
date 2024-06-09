@@ -11,9 +11,9 @@ interface DashboardProjectProps {
 
 export const DashboardProject = ({ project }: DashboardProjectProps) => {
   return (
-    <div className="flex flex-col flex-start gap-2 border-2 p-8 shadow-lg border-zinc-600 dark:border-zinc-400">
+    <div className="flex flex-col flex-start gap-2 border-2 p-8 shadow-lg border-zinc-500 dark:border-zinc-700">
       <Heading level={6}>{project.name}</Heading>
-      <p className="border-b pb-4">{project.description}</p>
+      <p className="border-b pb-4 dark:border-zinc-700">{project.description}</p>
       <div className="flex items-start gap-8 mt-4">
         <Image src={project.cover?.url!} alt={project.name!} width={600} height={400} className="shadow-lg " />
         <div className="flex flex-col gap-4">
