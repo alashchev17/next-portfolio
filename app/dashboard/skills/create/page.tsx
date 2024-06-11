@@ -10,24 +10,22 @@ import { Heading } from '@/components/UI/Heading'
 import { DashboardSkillset } from '@/components/Dashboard/DashboardSkillset'
 import { TransitionLink } from '@/components/TransitionLink'
 import { Button } from '@/components/UI/Button'
+import { CreateSkillForm } from '@/components/CreateSkillForm'
 
 export function generateMetadata(): Metadata {
   return {
-    title: 'Dashboard | Skills',
+    title: 'Dashboard | Create Skillset',
   }
 }
 
 export default async function DashboardSkills() {
-  const response = await sdk.Skillsets()
-  const skillsets = response.data.skillsets
-
   const session = await auth()
 
   const host = headers().get('host')
   const protocol = headers().get('x-forwarded-proto')
 
   if (!session) {
-    redirect(`/login?callbackUrl=${protocol}://${host}/dashboard/skills`)
+    redirect(`/login?callbackUrl=${protocol}://${host}/dashboard/skills/create`)
   }
 
   const userRole = users.find((user) => user.email === session.user?.email)?.role || 'User'
@@ -39,18 +37,11 @@ export default async function DashboardSkills() {
   return (
     <>
       <Heading level={6} className="py-4">
-        Existing skillsets
+        Add new skillset
       </Heading>
-      <p className="mb-4 text-zinc-500 dark:text-zinc-400">
-        You can add new skillsets by clicking the button below. You can also edit existing skillsets by clicking on the edit button.
-      </p>
-      <TransitionLink href={`/dashboard/skills/create`} className="mb-4">
-        <Button variant="outline">Add new skillset</Button>
-      </TransitionLink>
+      <p className="mb-4 text-zinc-500 dark:text-zinc-400">Fill below a form to add a new skillset.</p>
       <div className="flex flex-wrap gap-3 mb-4">
-        {skillsets.map((skillset) => (
-          <DashboardSkillset key={skillset.id} skillset={skillset} />
-        ))}
+        <CreateSkillForm />
       </div>
     </>
   )

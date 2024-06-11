@@ -11,7 +11,7 @@ export const login = async (values: {
     }
   | undefined
 > => {
-  const currentUser = users.find((user) => user.email === values.email)
+  const currentUser = users.find((user) => user.email === values.email.trim().toLowerCase())
   if (!currentUser) {
     return Promise.resolve({
       message: 'User not found',
@@ -25,4 +25,6 @@ export const login = async (values: {
       field: 'password',
     })
   }
+
+  return Promise.resolve(undefined)
 }

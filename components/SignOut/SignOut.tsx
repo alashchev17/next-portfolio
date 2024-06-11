@@ -7,9 +7,10 @@ import { Button } from '@/components/UI/Button'
 type SignOutProps = {
   variant?: 'secondary' | 'default' | 'outline' | 'link' | 'destructive' | 'ghost'
   callbackUrl?: string
+  className?: string
 }
 
-export const SignOut = ({ variant = 'default', callbackUrl }: SignOutProps) => {
+export const SignOut = ({ variant = 'default', callbackUrl, className = '' }: SignOutProps) => {
   return (
     <Link
       href="#"
@@ -19,7 +20,7 @@ export const SignOut = ({ variant = 'default', callbackUrl }: SignOutProps) => {
         })
       }
     >
-      <Button type="submit" variant={variant}>
+      <Button type="submit" variant={variant} className={className}>
         Logout
       </Button>
     </Link>

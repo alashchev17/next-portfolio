@@ -37,7 +37,12 @@ export const SignInForm = ({ handleFinish }: SignInFormProps) => {
 
   const onFormSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsFormSending(true)
-    const response = await handleFinish(values)
+    const formattedValues = {
+      ...values,
+      password: values.password.trim(),
+      email: values.email.trim().toLowerCase(),
+    }
+    const response = await handleFinish(formattedValues)
     if (!response) {
       form.reset()
       setIsFormSending(false)
@@ -51,8 +56,8 @@ export const SignInForm = ({ handleFinish }: SignInFormProps) => {
         },
       })
       signIn('credentials', {
-        email: values.email,
-        password: values.password,
+        email: formattedValues.email,
+        password: formattedValues.password,
         callbackUrl,
       })
       return
@@ -95,7 +100,7 @@ export const SignInForm = ({ handleFinish }: SignInFormProps) => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input placeholder="Enter your password" {...field} />
+                <Input placeholder="Enter your password" {...field} type="password" />
               </FormControl>
               <FormDescription>Enter your password.</FormDescription>
               <FormMessage />

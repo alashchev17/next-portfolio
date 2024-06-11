@@ -33,8 +33,8 @@ export const Header = ({ callbackBaseUrl }: HeaderProps) => {
             <Heading level={5}>Andrii Lashchov</Heading>
           </Link>
         )}
-        <div className="flex gap-4 items-center">
-          {session.status !== 'loading' && (
+        <div className="flex max-sm:gap-1 gap-4 items-center">
+          {session.status !== 'loading' ? (
             <>
               {session?.status === 'authenticated' ? (
                 <>
@@ -43,7 +43,7 @@ export const Header = ({ callbackBaseUrl }: HeaderProps) => {
                       Dashboard
                     </Button>
                   </TransitionLink>
-                  <SignOut variant="outline" callbackUrl={pathname} />
+                  <SignOut variant="outline" callbackUrl={pathname} className="bg-zinc-50 dark:bg-zinc-900 max-sm:hidden" />
                 </>
               ) : (
                 <TransitionLink href={`/login?callbackUrl=${callbackUrl}`}>
@@ -53,6 +53,10 @@ export const Header = ({ callbackBaseUrl }: HeaderProps) => {
                 </TransitionLink>
               )}
             </>
+          ) : (
+            <Button variant="outline" disabled>
+              Loading
+            </Button>
           )}
           <ModeToggler />
         </div>

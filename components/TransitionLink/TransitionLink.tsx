@@ -11,12 +11,7 @@ interface TransitionLinkProps {
   onClick?: () => void
 }
 
-export const TransitionLink = ({
-  href,
-  label = '',
-  className = 'border-[1px] border-black p-4 rounded-xl hover:bg-black hover:text-neutral-100 cursor-pointer',
-  children = null,
-}: TransitionLinkProps) => {
+export const TransitionLink = ({ href, label = '', className = '', children = null }: TransitionLinkProps) => {
   const router = useRouter()
 
   const handleClick = () => {
@@ -25,7 +20,7 @@ export const TransitionLink = ({
 
   if (children) {
     return (
-      <div className="cursor-pointer" onClick={handleClick} suppressHydrationWarning>
+      <div className={`cursor-pointer inline-block ${className}`} onClick={handleClick} suppressHydrationWarning>
         {children}
       </div>
     )
