@@ -66,11 +66,6 @@
   }
 }
 
-body {
-  background-color: hsl(1, 85%, 54%);
-  /* background-color: hsl(0, 71%, 39%); */
-}
-
 @layer base {
   * {
     @apply border-border;
