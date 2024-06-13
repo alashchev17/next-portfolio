@@ -10,7 +10,7 @@ export const SkillsetItem = ({ skillset }: SkillsetItemProps) => {
   return (
     <div className="flex flex-col py-6 px-6 rounded-sm border-purple-700 border-2 sm:w-full max-sm:w-full md:w-[calc(50%-6px)] lg:w-[calc(33%-6px)] gap-3">
       <Image
-        src={skillset.iconImage?.url ? skillset.iconImage?.url : ''}
+        src={skillset.iconImage?.url!}
         width={64}
         height={64}
         style={{ width: 64, height: 64, objectFit: 'cover' }}

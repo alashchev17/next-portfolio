@@ -6,12 +6,12 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { signIn } from 'next-auth/react'
+import { useState } from 'react'
 
 import { toast } from 'sonner'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/UI/Form'
 import { Input } from '@/components/UI/Input'
 import { Button } from '@/components/UI/Button'
-import { useState } from 'react'
 
 type SignInFormProps = {
   handleFinish: (values: { email: string; password: string }) => Promise<{ message: string; field: 'email' | 'password' } | undefined>

@@ -5,6 +5,7 @@ query Projects {
     description
     link
     cover {
+      id
       fileName
       url
       width

@@ -1,0 +1,23 @@
+mutation createAsset($fileName: String!) {
+  createAsset(data: { fileName: $fileName }) {
+    id
+    url
+    upload {
+      error {
+        code
+        message
+      }
+      requestPostData {
+        algorithm
+        credential
+        date
+        key
+        securityToken
+        signature
+        policy
+        url
+      }
+    }
+    fileName
+  }
+}

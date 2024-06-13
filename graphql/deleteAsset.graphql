@@ -1,0 +1,7 @@
+mutation deleteAsset($assetId: ID!) {
+  deleteAsset(where: { id: $assetId }) {
+    id
+    fileName
+    url
+  }
+}

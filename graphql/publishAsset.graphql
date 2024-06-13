@@ -1,0 +1,9 @@
+mutation publishAsset($assetId: ID!) {
+  publishAsset(where: { id: $assetId }, to: PUBLISHED) {
+    id
+    fileName
+    url
+    height
+    width
+  }
+}

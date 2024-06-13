@@ -4,7 +4,6 @@ import type { SkillsetsQuery } from '@/generated/graphql'
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { revalidatePath } from 'next/cache'
 
 import { sdk } from '@/lib/client'
 
@@ -20,7 +19,11 @@ type DashboardSkillsetProps = {
 export const DashboardSkillset = ({ skillset }: DashboardSkillsetProps) => {
   const router = useRouter()
   const handleDeleteSkillset = async (id: string) => {
+    if (skillset.iconImage) {
+      await sdk.deleteAsset({ assetId: skillset.iconImage.id as string })
+    }
     const response = await sdk.deleteSkillset({ skillsetId: id })
+
     if (!response.errors) {
       toast.success(`Skillset "${skillset.name}" deleted!`)
       router.refresh()

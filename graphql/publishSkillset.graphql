@@ -1,0 +1,12 @@
+mutation publishSkillset($skillsetId: ID!) {
+  publishSkillset(to: PUBLISHED, where: { id: $skillsetId }) {
+    id
+    name
+    description
+    iconImage {
+      id
+      fileName
+      url
+    }
+  }
+}

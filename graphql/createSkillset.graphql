@@ -1,0 +1,12 @@
+mutation createSkillset($skillsetDescription: String!, $skillsetName: String!, $assetId: ID!) {
+  createSkillset(data: { name: $skillsetName, description: $skillsetDescription, iconImage: { connect: { id: $assetId } } }) {
+    id
+    name
+    description
+    iconImage {
+      id
+      fileName
+      url
+    }
+  }
+}

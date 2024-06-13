@@ -21,6 +21,7 @@ query AllData {
     name
     description
     iconImage {
+      id
       url
       fileName
       width

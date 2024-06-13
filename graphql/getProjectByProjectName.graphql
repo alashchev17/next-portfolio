@@ -2,6 +2,7 @@ query getProjectByProjectName($name: String!) {
   projects(where: { name: $name }) {
     name
     cover {
+      id
       fileName
       url
       width

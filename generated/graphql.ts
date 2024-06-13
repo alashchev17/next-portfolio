@@ -5983,7 +5983,30 @@ export enum _SystemDateTimeFieldVariation {
 export type AllDataQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AllDataQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', id: string, name?: string | null, description?: string | null, link?: string | null, details?: string | null, cover?: { __typename?: 'Asset', fileName: string, url: string, width?: number | null, height?: number | null } | null, tags: Array<{ __typename?: 'Tag', name?: string | null, id: string }> }>, skillsets: Array<{ __typename?: 'Skillset', id: string, name?: string | null, description?: string | null, iconImage?: { __typename?: 'Asset', url: string, fileName: string, width?: number | null, height?: number | null } | null }>, experiences: Array<{ __typename?: 'Experience', name?: string | null, description?: string | null, location?: string | null, dateStart?: any | null, dateOver?: any | null }> };
+export type AllDataQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', id: string, name?: string | null, description?: string | null, link?: string | null, details?: string | null, cover?: { __typename?: 'Asset', fileName: string, url: string, width?: number | null, height?: number | null } | null, tags: Array<{ __typename?: 'Tag', name?: string | null, id: string }> }>, skillsets: Array<{ __typename?: 'Skillset', id: string, name?: string | null, description?: string | null, iconImage?: { __typename?: 'Asset', id: string, url: string, fileName: string, width?: number | null, height?: number | null } | null }>, experiences: Array<{ __typename?: 'Experience', name?: string | null, description?: string | null, location?: string | null, dateStart?: any | null, dateOver?: any | null }> };
+
+export type CreateAssetMutationVariables = Exact<{
+  fileName: Scalars['String']['input'];
+}>;
+
+
+export type CreateAssetMutation = { __typename?: 'Mutation', createAsset?: { __typename?: 'Asset', id: string, url: string, fileName: string, upload?: { __typename?: 'AssetUpload', error?: { __typename?: 'AssetUploadError', code: string, message: string } | null, requestPostData?: { __typename?: 'AssetUploadRequestPostData', algorithm: string, credential: string, date: string, key: string, securityToken?: string | null, signature: string, policy: string, url: string } | null } | null } | null };
+
+export type CreateSkillsetMutationVariables = Exact<{
+  skillsetDescription: Scalars['String']['input'];
+  skillsetName: Scalars['String']['input'];
+  assetId: Scalars['ID']['input'];
+}>;
+
+
+export type CreateSkillsetMutation = { __typename?: 'Mutation', createSkillset?: { __typename?: 'Skillset', id: string, name?: string | null, description?: string | null, iconImage?: { __typename?: 'Asset', id: string, fileName: string, url: string } | null } | null };
+
+export type DeleteAssetMutationVariables = Exact<{
+  assetId: Scalars['ID']['input'];
+}>;
+
+
+export type DeleteAssetMutation = { __typename?: 'Mutation', deleteAsset?: { __typename?: 'Asset', id: string, fileName: string, url: string } | null };
 
 export type DeleteSkillsetMutationVariables = Exact<{
   skillsetId: Scalars['ID']['input'];
@@ -6002,17 +6025,31 @@ export type GetProjectByProjectNameQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectByProjectNameQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', name?: string | null, description?: string | null, link?: string | null, details?: string | null, cover?: { __typename?: 'Asset', fileName: string, url: string, width?: number | null, height?: number | null } | null, tags: Array<{ __typename?: 'Tag', id: string, name?: string | null }> }> };
+export type GetProjectByProjectNameQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', name?: string | null, description?: string | null, link?: string | null, details?: string | null, cover?: { __typename?: 'Asset', id: string, fileName: string, url: string, width?: number | null, height?: number | null } | null, tags: Array<{ __typename?: 'Tag', id: string, name?: string | null }> }> };
 
 export type ProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', id: string, name?: string | null, description?: string | null, link?: string | null, details?: string | null, cover?: { __typename?: 'Asset', fileName: string, url: string, width?: number | null, height?: number | null } | null, tags: Array<{ __typename?: 'Tag', name?: string | null, id: string }> }> };
+export type ProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', id: string, name?: string | null, description?: string | null, link?: string | null, details?: string | null, cover?: { __typename?: 'Asset', id: string, fileName: string, url: string, width?: number | null, height?: number | null } | null, tags: Array<{ __typename?: 'Tag', name?: string | null, id: string }> }> };
+
+export type PublishAssetMutationVariables = Exact<{
+  assetId: Scalars['ID']['input'];
+}>;
+
+
+export type PublishAssetMutation = { __typename?: 'Mutation', publishAsset?: { __typename?: 'Asset', id: string, fileName: string, url: string, height?: number | null, width?: number | null } | null };
+
+export type PublishSkillsetMutationVariables = Exact<{
+  skillsetId: Scalars['ID']['input'];
+}>;
+
+
+export type PublishSkillsetMutation = { __typename?: 'Mutation', publishSkillset?: { __typename?: 'Skillset', id: string, name?: string | null, description?: string | null, iconImage?: { __typename?: 'Asset', id: string, fileName: string, url: string } | null } | null };
 
 export type SkillsetsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type SkillsetsQuery = { __typename?: 'Query', skillsets: Array<{ __typename?: 'Skillset', id: string, name?: string | null, description?: string | null, iconImage?: { __typename?: 'Asset', url: string, fileName: string } | null }> };
+export type SkillsetsQuery = { __typename?: 'Query', skillsets: Array<{ __typename?: 'Skillset', id: string, name?: string | null, description?: string | null, iconImage?: { __typename?: 'Asset', id: string, url: string, fileName: string } | null }> };
 
 
 export const AllDataDocument = gql`
@@ -6039,6 +6076,7 @@ export const AllDataDocument = gql`
     name
     description
     iconImage {
+      id
       url
       fileName
       width
@@ -6051,6 +6089,56 @@ export const AllDataDocument = gql`
     location
     dateStart
     dateOver
+  }
+}
+    `;
+export const CreateAssetDocument = gql`
+    mutation createAsset($fileName: String!) {
+  createAsset(data: {fileName: $fileName}) {
+    id
+    url
+    upload {
+      error {
+        code
+        message
+      }
+      requestPostData {
+        algorithm
+        credential
+        date
+        key
+        securityToken
+        signature
+        policy
+        url
+      }
+    }
+    fileName
+  }
+}
+    `;
+export const CreateSkillsetDocument = gql`
+    mutation createSkillset($skillsetDescription: String!, $skillsetName: String!, $assetId: ID!) {
+  createSkillset(
+    data: {name: $skillsetName, description: $skillsetDescription, iconImage: {connect: {id: $assetId}}}
+  ) {
+    id
+    name
+    description
+    iconImage {
+      id
+      fileName
+      url
+    }
+  }
+}
+    `;
+export const DeleteAssetDocument = gql`
+    mutation deleteAsset($assetId: ID!) {
+  deleteAsset(where: {id: $assetId}) {
+    id
+    fileName
+    url
   }
 }
     `;
@@ -6079,6 +6167,7 @@ export const GetProjectByProjectNameDocument = gql`
   projects(where: {name: $name}) {
     name
     cover {
+      id
       fileName
       url
       width
@@ -6102,6 +6191,7 @@ export const ProjectsDocument = gql`
     description
     link
     cover {
+      id
       fileName
       url
       width
@@ -6115,6 +6205,31 @@ export const ProjectsDocument = gql`
   }
 }
     `;
+export const PublishAssetDocument = gql`
+    mutation publishAsset($assetId: ID!) {
+  publishAsset(where: {id: $assetId}, to: PUBLISHED) {
+    id
+    fileName
+    url
+    height
+    width
+  }
+}
+    `;
+export const PublishSkillsetDocument = gql`
+    mutation publishSkillset($skillsetId: ID!) {
+  publishSkillset(to: PUBLISHED, where: {id: $skillsetId}) {
+    id
+    name
+    description
+    iconImage {
+      id
+      fileName
+      url
+    }
+  }
+}
+    `;
 export const SkillsetsDocument = gql`
     query Skillsets {
   skillsets {
@@ -6122,6 +6237,7 @@ export const SkillsetsDocument = gql`
     name
     description
     iconImage {
+      id
       url
       fileName
     }
@@ -6134,15 +6250,29 @@ export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, str
 
 const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType, _variables) => action();
 const AllDataDocumentString = print(AllDataDocument);
+const CreateAssetDocumentString = print(CreateAssetDocument);
+const CreateSkillsetDocumentString = print(CreateSkillsetDocument);
+const DeleteAssetDocumentString = print(DeleteAssetDocument);
 const DeleteSkillsetDocumentString = print(DeleteSkillsetDocument);
 const ExperiencesDocumentString = print(ExperiencesDocument);
 const GetProjectByProjectNameDocumentString = print(GetProjectByProjectNameDocument);
 const ProjectsDocumentString = print(ProjectsDocument);
+const PublishAssetDocumentString = print(PublishAssetDocument);
+const PublishSkillsetDocumentString = print(PublishSkillsetDocument);
 const SkillsetsDocumentString = print(SkillsetsDocument);
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
     AllData(variables?: AllDataQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: AllDataQuery; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<AllDataQuery>(AllDataDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'AllData', 'query', variables);
+    },
+    createAsset(variables: CreateAssetMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: CreateAssetMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<CreateAssetMutation>(CreateAssetDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createAsset', 'mutation', variables);
+    },
+    createSkillset(variables: CreateSkillsetMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: CreateSkillsetMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<CreateSkillsetMutation>(CreateSkillsetDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createSkillset', 'mutation', variables);
+    },
+    deleteAsset(variables: DeleteAssetMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: DeleteAssetMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<DeleteAssetMutation>(DeleteAssetDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'deleteAsset', 'mutation', variables);
     },
     deleteSkillset(variables: DeleteSkillsetMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: DeleteSkillsetMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<DeleteSkillsetMutation>(DeleteSkillsetDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'deleteSkillset', 'mutation', variables);
@@ -6155,6 +6285,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     Projects(variables?: ProjectsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: ProjectsQuery; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<ProjectsQuery>(ProjectsDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Projects', 'query', variables);
+    },
+    publishAsset(variables: PublishAssetMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: PublishAssetMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<PublishAssetMutation>(PublishAssetDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'publishAsset', 'mutation', variables);
+    },
+    publishSkillset(variables: PublishSkillsetMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: PublishSkillsetMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<PublishSkillsetMutation>(PublishSkillsetDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'publishSkillset', 'mutation', variables);
     },
     Skillsets(variables?: SkillsetsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: SkillsetsQuery; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<SkillsetsQuery>(SkillsetsDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Skillsets', 'query', variables);
