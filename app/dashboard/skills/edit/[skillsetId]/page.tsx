@@ -7,10 +7,8 @@ import { sdk } from '@/lib/client'
 import { users } from '@/database/users'
 
 import { Heading } from '@/components/UI/Heading'
-import { DashboardSkillset } from '@/components/Dashboard/DashboardSkillset'
 import { TransitionLink } from '@/components/TransitionLink'
 import { Button } from '@/components/UI/Button'
-import { CreateSkillForm } from '@/components/Forms/CreateSkillForm'
 import { EditSkillForm } from '@/components/Forms/EditSkillForm'
 
 type EditSkillPageProps = {

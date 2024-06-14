@@ -10,8 +10,6 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from '@/components/UI/Input'
 import { Button } from '@/components/UI/Button'
 
-import { MAX_IMAGE_FILE_SIZE } from '@/constants'
-import { checkFileType } from '@/lib/utils'
 import { updateSkillset } from '@/actions'
 import { SkillsetsQuery } from '@/generated/graphql'
 import Image from 'next/image'

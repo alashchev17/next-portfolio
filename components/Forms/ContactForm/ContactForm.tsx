@@ -8,8 +8,15 @@ import { Input } from '@/components/UI/Input'
 import { Button } from '@/components/UI/Button'
 import { toast } from 'sonner'
 
-interface ContactFormProps {
-  handleFinish: (values: { message: string; email: string; name: string }) => void
+type handleFinishProps = {
+  message: string
+  email: string
+  name: string
+}
+
+type ContactFormProps = {
+  // eslint-disable-next-line no-unused-vars
+  handleFinish: (values: handleFinishProps) => void
 }
 
 const formSchema = z.object({

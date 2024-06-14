@@ -13,8 +13,14 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from '@/components/UI/Input'
 import { Button } from '@/components/UI/Button'
 
+type handleFinishProps = {
+  email: string
+  password: string
+}
+
 type SignInFormProps = {
-  handleFinish: (values: { email: string; password: string }) => Promise<{ message: string; field: 'email' | 'password' } | undefined>
+  // eslint-disable-next-line no-unused-vars
+  handleFinish: (values: handleFinishProps) => Promise<{ message: string; field: 'email' | 'password' } | undefined>
 }
 
 const formSchema = z.object({
