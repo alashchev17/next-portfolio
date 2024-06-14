@@ -42,7 +42,6 @@ export const addSkillset = async (
   const assetResponse = await sdk.createAsset({ fileName: image.name })
 
   if (assetResponse.errors) {
-    console.log(`[SERVER]: createAsset() errors: ${JSON.stringify(assetResponse.errors)}`)
     return Promise.resolve({
       message: 'Some error occurred while uploading this image. Try other image or contact support',
       field: 'image',
@@ -65,10 +64,12 @@ export const addSkillset = async (
     body: formDataToUpload,
   })
 
-  const data = await uploadResponse.text()
-
   if (!uploadResponse.ok) {
-    throw new Error(data)
+    await sdk.deleteAsset({ assetId: assetResponse.data.createAsset?.id as string })
+    return Promise.resolve({
+      message: 'Some error occured while uploading this image. Try other image or contact support.',
+      field: 'image',
+    })
   }
 
   // Create Skillset with its Asset
@@ -84,13 +85,27 @@ export const addSkillset = async (
   try {
     await sdk.publishSkillset({ skillsetId: createSkillsetResponse.data?.createSkillset?.id as string })
   } catch (e) {
-    return Promise.resolve({ message: 'Some error occurred while publishing this skillset. Try again or contact support', field: 'image' })
+    // deleting draft asset and skillset if publish failed
+    await sdk.deleteAsset({ assetId: assetResponse.data.createAsset?.id as string })
+    await sdk.deleteSkillset({ skillsetId: createSkillsetResponse.data.createSkillset?.id as string })
+
+    return Promise.resolve({
+      message: 'Some error occurred while publishing this skillset. Try again or contact support',
+      field: 'image',
+    })
   }
 
   try {
     await sdk.publishAsset({ assetId: assetResponse.data.createAsset?.id as string })
   } catch (e) {
-    return Promise.resolve({ message: 'Some error occurred while publishing this skillset. Try again or contact support', field: 'image' })
+    // deleting draft asset and skillset if publish failed
+    await sdk.deleteAsset({ assetId: assetResponse.data.createAsset?.id as string })
+    await sdk.deleteSkillset({ skillsetId: createSkillsetResponse.data.createSkillset?.id as string })
+
+    return Promise.resolve({
+      message: 'Some error occurred while publishing image for this skillset. Try again or contact support',
+      field: 'image',
+    })
   }
 
   return Promise.resolve(undefined)

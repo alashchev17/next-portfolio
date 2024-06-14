@@ -1,8 +1,5 @@
 'use client'
 
-import Image from 'next/image'
-import { useSearchParams } from 'next/navigation'
-
 import { useState } from 'react'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -21,9 +18,9 @@ const formSchema = z.object({
   title: z.string().min(3, 'Title must be at least 3 characters long'),
   description: z.string().min(10, 'Description must be at least 10 characters long'),
   image: z
-    .instanceof(File, { message: 'File is required' })
-    .refine((file: File) => file.size < MAX_IMAGE_FILE_SIZE, 'Max size is 5 MB')
-    .refine((file: File) => checkFileType(file), 'Only .jpg and .png formats are supported.'),
+    .instanceof(FileList, { message: 'File is required' })
+    .refine((fileList: FileList) => fileList?.[0].size < MAX_IMAGE_FILE_SIZE, 'Max size is 5 MB')
+    .refine((fileList: FileList) => checkFileType(fileList?.[0]), 'Only .jpg and .png formats are supported.'),
 })
 
 export const CreateSkillForm = () => {
@@ -40,11 +37,13 @@ export const CreateSkillForm = () => {
 
   const imageRef = form.register('image')
 
-  const onFormSubmit = async (data: z.infer<typeof formSchema>) => {
+  const onFormSubmit = async ({ title, image, description }: z.infer<typeof formSchema>) => {
     const formData = new FormData()
-    formData.append('image', data.image, data.image.name)
-    formData.append('title', data.title)
-    formData.append('description', data.description)
+    const blobFromFileList = image[0]
+
+    formData.append('image', blobFromFileList, blobFromFileList.name)
+    formData.append('title', title)
+    formData.append('description', description)
 
     setIsFormSending(true)
     const response = await addSkillset(formData)
@@ -104,7 +103,7 @@ export const CreateSkillForm = () => {
                   placeholder="Upload image"
                   {...imageRef}
                   onChange={(event) => {
-                    field.onChange(event.target?.files?.[0] ?? undefined)
+                    field.onChange(event.target?.files ?? undefined)
                   }}
                 />
               </FormControl>
