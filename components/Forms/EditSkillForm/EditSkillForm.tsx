@@ -12,57 +12,58 @@ import { Button } from '@/components/UI/Button'
 
 import { MAX_IMAGE_FILE_SIZE } from '@/constants'
 import { checkFileType } from '@/lib/utils'
-import { addSkillset } from '@/actions'
+import { updateSkillset } from '@/actions'
+import { SkillsetsQuery } from '@/generated/graphql'
+import Image from 'next/image'
+
+type EditSkillFormProps = {
+  skillset: NonNullable<SkillsetsQuery['skillsets']>[number]
+}
 
 const formSchema = z.object({
   title: z.string().min(3, 'Title must be at least 3 characters long'),
   description: z.string().min(10, 'Description must be at least 10 characters long'),
-  image: z
-    .instanceof(FileList, { message: 'File is required' })
-    .refine((fileList: FileList) => fileList?.[0].size < MAX_IMAGE_FILE_SIZE, 'Max size is 5 MB')
-    .refine((fileList: FileList) => checkFileType(fileList?.[0]), 'Only .jpg and .png formats are supported.'),
 })
 
-export const CreateSkillForm = () => {
+export const EditSkillForm = ({ skillset }: EditSkillFormProps) => {
   const [isFormSending, setIsFormSending] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: '',
-      description: '',
-      image: undefined,
+      title: skillset.name || '',
+      description: skillset.description || '',
     },
   })
 
-  const imageRef = form.register('image')
-
-  const onFormSubmit = async ({ title, image, description }: z.infer<typeof formSchema>) => {
+  const onFormSubmit = async ({ title, description }: z.infer<typeof formSchema>) => {
     const formData = new FormData()
-    const blobFromFileList = image[0]
 
-    formData.append('image', blobFromFileList, blobFromFileList.name)
     formData.append('title', title)
     formData.append('description', description)
 
     setIsFormSending(true)
-    const response = await addSkillset(formData)
+    const response = await updateSkillset(formData, skillset.id)
 
-    if (!response) {
-      toast.success('Skillset created successfully')
-      form.reset()
+    if (!response.message && !response.field && response.newData) {
+      toast.success('Skillset updated successfully')
+      form.setValue('title', response.newData.title)
+      form.setValue('description', response.newData.description)
+      setIsFormSending(false)
       return
     }
     toast.error(response.message)
-    form.resetField(response.field)
-    form.setError(response.field, { message: response.message }, { shouldFocus: true })
+    if (response.field) {
+      form.resetField(response.field)
+      form.setError(response.field, { message: response.message }, { shouldFocus: true })
+    }
 
     setIsFormSending(false)
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onFormSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onFormSubmit)} className="w-full max-w-[500px] space-y-8">
         <FormField
           control={form.control}
           name="title"
@@ -91,38 +92,22 @@ export const CreateSkillForm = () => {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="image"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Skillset image</FormLabel>
-              <FormControl>
-                <Input
-                  type="file"
-                  placeholder="Upload image"
-                  {...imageRef}
-                  onChange={(event) => {
-                    field.onChange(event.target?.files ?? undefined)
-                  }}
-                />
-              </FormControl>
-              <FormDescription>Upload your skillset image. It should be square image and less than 5 MB.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="flex flex-col gap-3">
+          <p>Current skill icon:</p>
+          <Image
+            className="w-[50px] h-[50px] object-cover"
+            src={skillset.iconImage?.url || ''}
+            alt={`Skillset ${skillset.name} Icon`}
+            width={50}
+            height={50}
+          />
+        </div>
         <Button
           type="submit"
           className="w-full transition-colors inline-flex items-center gap-3 py-6"
-          disabled={
-            form.getFieldState('title').invalid ||
-            form.getFieldState('description').invalid ||
-            form.getFieldState('image').invalid ||
-            isFormSending
-          }
+          disabled={form.getFieldState('title').invalid || form.getFieldState('description').invalid || isFormSending}
         >
-          {isFormSending ? 'Creating new skillset...' : 'Create a new skillset'}
+          {isFormSending ? 'Updating skillset...' : 'Update skillset'}
         </Button>
       </form>
     </Form>

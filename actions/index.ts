@@ -3,6 +3,7 @@
 
 import { users } from '@/database/users'
 import { sdk } from '@/lib/client'
+import { revalidatePath } from 'next/cache'
 
 export const login = async (values: {
   email: string
@@ -109,4 +110,46 @@ export const addSkillset = async (
   }
 
   return Promise.resolve(undefined)
+}
+
+export const updateSkillset = async (
+  formData: FormData,
+  skillsetId: string
+): Promise<{
+  message?: string
+  field?: 'title' | 'description'
+  newData?: { title: string; description: string }
+}> => {
+  const title = formData.get('title') as string
+  const description = formData.get('description') as string
+
+  // Updating skillset data
+  try {
+    await sdk.updateSkillset({
+      skillsetId,
+      skillsetName: title,
+      skillsetDescription: description,
+    })
+  } catch (e) {
+    return Promise.resolve({
+      message: 'Some error occurred while updating this skillset. Try again or contact support',
+      field: 'title',
+    })
+  }
+
+  // Publishing current skillset
+
+  try {
+    await sdk.publishSkillset({ skillsetId })
+  } catch (e) {
+    return Promise.resolve({
+      message: 'Some error occurred while publishing this skillset. Try again or contact support',
+      field: 'title',
+    })
+  }
+
+  revalidatePath(`/dashboard/skills/edit/${skillsetId}`)
+  return Promise.resolve({
+    newData: { title, description },
+  })
 }

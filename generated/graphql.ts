@@ -6051,6 +6051,15 @@ export type SkillsetsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type SkillsetsQuery = { __typename?: 'Query', skillsets: Array<{ __typename?: 'Skillset', id: string, name?: string | null, description?: string | null, iconImage?: { __typename?: 'Asset', id: string, url: string, fileName: string } | null }> };
 
+export type UpdateSkillsetMutationVariables = Exact<{
+  skillsetId: Scalars['ID']['input'];
+  skillsetName: Scalars['String']['input'];
+  skillsetDescription: Scalars['String']['input'];
+}>;
+
+
+export type UpdateSkillsetMutation = { __typename?: 'Mutation', updateSkillset?: { __typename?: 'Skillset', id: string, name?: string | null, description?: string | null } | null };
+
 
 export const AllDataDocument = gql`
     query AllData {
@@ -6244,6 +6253,18 @@ export const SkillsetsDocument = gql`
   }
 }
     `;
+export const UpdateSkillsetDocument = gql`
+    mutation updateSkillset($skillsetId: ID!, $skillsetName: String!, $skillsetDescription: String!) {
+  updateSkillset(
+    where: {id: $skillsetId}
+    data: {name: $skillsetName, description: $skillsetDescription}
+  ) {
+    id
+    name
+    description
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
 
@@ -6260,6 +6281,7 @@ const ProjectsDocumentString = print(ProjectsDocument);
 const PublishAssetDocumentString = print(PublishAssetDocument);
 const PublishSkillsetDocumentString = print(PublishSkillsetDocument);
 const SkillsetsDocumentString = print(SkillsetsDocument);
+const UpdateSkillsetDocumentString = print(UpdateSkillsetDocument);
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
     AllData(variables?: AllDataQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: AllDataQuery; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
@@ -6294,6 +6316,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     Skillsets(variables?: SkillsetsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: SkillsetsQuery; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<SkillsetsQuery>(SkillsetsDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Skillsets', 'query', variables);
+    },
+    updateSkillset(variables: UpdateSkillsetMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: UpdateSkillsetMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<UpdateSkillsetMutation>(UpdateSkillsetDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateSkillset', 'mutation', variables);
     }
   };
 }

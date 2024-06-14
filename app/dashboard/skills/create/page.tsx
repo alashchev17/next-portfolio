@@ -3,14 +3,10 @@ import type { Metadata } from 'next'
 import { headers } from 'next/headers'
 
 import { auth } from '@/auth'
-import { sdk } from '@/lib/client'
 import { users } from '@/database/users'
 
 import { Heading } from '@/components/UI/Heading'
-import { DashboardSkillset } from '@/components/Dashboard/DashboardSkillset'
-import { TransitionLink } from '@/components/TransitionLink'
-import { Button } from '@/components/UI/Button'
-import { CreateSkillForm } from '@/components/CreateSkillForm'
+import { CreateSkillForm } from '@/components/Forms/CreateSkillForm'
 
 export function generateMetadata(): Metadata {
   return {
@@ -18,7 +14,7 @@ export function generateMetadata(): Metadata {
   }
 }
 
-export default async function DashboardSkills() {
+export default async function CreateSkillPage() {
   const session = await auth()
 
   const host = headers().get('host')

@@ -1,0 +1,7 @@
+mutation updateSkillset($skillsetId: ID!, $skillsetName: String!, $skillsetDescription: String!) {
+  updateSkillset(where: { id: $skillsetId }, data: { name: $skillsetName, description: $skillsetDescription }) {
+    id
+    name
+    description
+  }
+}

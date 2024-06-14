@@ -1,6 +1,6 @@
 import { Button } from '@/components/UI/Button'
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from '@/components/UI/Drawer'
-import { ContactForm } from '@/components/ContactForm'
+import { ContactForm } from '@/components/Forms/ContactForm'
 
 import { postMessage } from '@/lib/postMessage'
 import { HeroSectionContent } from './HeroSectionContent'

@@ -17,7 +17,7 @@ export function generateMetadata(): Metadata {
   }
 }
 
-export default async function DashboardSkills() {
+export default async function DashboardSkillsPage() {
   const response = await sdk.Skillsets()
   const skillsets = response.data.skillsets
 

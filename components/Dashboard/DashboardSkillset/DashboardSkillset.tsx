@@ -37,7 +37,7 @@ export const DashboardSkillset = ({ skillset }: DashboardSkillsetProps) => {
       <div className="flex flex-row max-sm:flex-col max-sm:items-start max-sm:gap-6 items-center justify-between mt-auto">
         <Image src={skillset.iconImage?.url!} alt={skillset.name!} width={64} height={64} />
         <div className="flex gap-4 md:flex-col xl:flex-row">
-          <Link href={`/dashboard/skills/${skillset.id}`}>
+          <Link href={`/dashboard/skills/edit/${skillset.id}`}>
             <Button variant="default">Edit skillset</Button>
           </Link>
           <Button variant="destructive" onClick={() => handleDeleteSkillset(skillset.id)}>
