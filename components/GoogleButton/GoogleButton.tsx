@@ -17,7 +17,7 @@ export const GoogleButton = () => {
           callbackUrl,
         })
       }
-      className="inline-flex items-center gap-3 py-6"
+      className="inline-flex items-center gap-3 py-6 dark:border-zinc-600"
     >
       <GoogleIcon width={20} height={20} />
       Sign in with Google

@@ -49,11 +49,15 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           <Heading level={3} className="mb-4">
             Technologies
           </Heading>
-          <div className="flex flex-wrap gap-2">
-            {project.tags.map((tag) => (
-              <Tag key={tag.id} tag={tag.name!} />
-            ))}
-          </div>
+          {project.tags.length !== 0 ? (
+            <div className="flex flex-wrap gap-2">
+              {project.tags.map((tag) => (
+                <Tag key={tag.id} tag={tag.name!} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-zinc-500">No technologies added</p>
+          )}
         </div>
 
         <div className="mb-8">

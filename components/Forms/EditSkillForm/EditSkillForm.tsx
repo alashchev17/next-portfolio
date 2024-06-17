@@ -44,7 +44,7 @@ export const EditSkillForm = ({ skillset }: EditSkillFormProps) => {
     const response = await updateSkillset(formData, skillset.id)
 
     if (!response.message && !response.field && response.newData) {
-      toast.success('Skillset updated successfully')
+      toast.success('Skillset updated successfully!')
       form.setValue('title', response.newData.title)
       form.setValue('description', response.newData.description)
       setIsFormSending(false)

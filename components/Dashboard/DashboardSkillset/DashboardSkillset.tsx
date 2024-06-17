@@ -3,13 +3,14 @@
 import type { SkillsetsQuery } from '@/generated/graphql'
 
 import Image from 'next/image'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 import { sdk } from '@/lib/client'
 
 import { Heading } from '@/components/UI/Heading'
 import { Button } from '@/components/UI/Button'
-import { useRouter } from 'next/navigation'
+import { TransitionLink } from '@/components/TransitionLink'
 import { toast } from 'sonner'
 
 type DashboardSkillsetProps = {
@@ -18,7 +19,10 @@ type DashboardSkillsetProps = {
 
 export const DashboardSkillset = ({ skillset }: DashboardSkillsetProps) => {
   const router = useRouter()
+  const [isSkillsetDeleting, setIsSkillsetDeleting] = useState(false)
+
   const handleDeleteSkillset = async (id: string) => {
+    setIsSkillsetDeleting(true)
     if (skillset.iconImage) {
       await sdk.deleteAsset({ assetId: skillset.iconImage.id as string })
     }
@@ -37,11 +41,11 @@ export const DashboardSkillset = ({ skillset }: DashboardSkillsetProps) => {
       <div className="flex flex-row max-sm:flex-col max-sm:items-start max-sm:gap-6 items-center justify-between mt-auto">
         <Image src={skillset.iconImage?.url!} alt={skillset.name!} width={64} height={64} />
         <div className="flex gap-4 md:flex-col xl:flex-row">
-          <Link href={`/dashboard/skills/edit/${skillset.id}`}>
+          <TransitionLink href={`/dashboard/skills/edit/${skillset.id}`}>
             <Button variant="default">Edit skillset</Button>
-          </Link>
-          <Button variant="destructive" onClick={() => handleDeleteSkillset(skillset.id)}>
-            Delete skillset
+          </TransitionLink>
+          <Button variant="destructive" onClick={() => handleDeleteSkillset(skillset.id)} disabled={isSkillsetDeleting}>
+            {isSkillsetDeleting ? 'Deleting skillset...' : 'Delete skillset'}
           </Button>
         </div>
       </div>

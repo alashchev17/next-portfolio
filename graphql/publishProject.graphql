@@ -1,0 +1,12 @@
+mutation publishProject($projectId: ID!) {
+  publishProject(to: PUBLISHED, where: { id: $projectId }) {
+    id
+    name
+    description
+    details
+    tags {
+      id
+      name
+    }
+  }
+}

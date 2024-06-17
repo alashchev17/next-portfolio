@@ -1,0 +1,28 @@
+mutation createProject(
+  $projectName: String!
+  $projectDescription: String!
+  $projectDetails: String!
+  $projectLink: String!
+  $assetId: ID!
+) {
+  createProject(
+    data: {
+      name: $projectName
+      description: $projectDescription
+      details: $projectDetails
+      link: $projectLink
+      cover: { connect: { id: $assetId } }
+    }
+  ) {
+    id
+    name
+    description
+    details
+    link
+    cover {
+      id
+      fileName
+      url
+    }
+  }
+}

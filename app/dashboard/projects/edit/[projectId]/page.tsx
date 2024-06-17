@@ -9,29 +9,29 @@ import { users } from '@/database/users'
 import { Heading } from '@/components/UI/Heading'
 import { TransitionLink } from '@/components/TransitionLink'
 import { Button } from '@/components/UI/Button'
-import { EditSkillForm } from '@/components/Forms/EditSkillForm'
+import { EditProjectForm } from '@/components/Forms/EditProjectForm'
 
-type EditSkillPageProps = {
+type EditProjectPageProps = {
   params: {
-    skillsetId: string
+    projectId: string
   }
 }
 
-export async function generateMetadata({ params }: EditSkillPageProps): Promise<Metadata> {
-  const skillset = (await sdk.Skillsets()).data.skillsets.find((skillset) => skillset.id === params.skillsetId)
+export async function generateMetadata({ params }: EditProjectPageProps): Promise<Metadata> {
+  const project = (await sdk.Projects()).data.projects.find((project) => project.id === params.projectId)
   return {
-    title: `Dashboard | Edit "${skillset?.name || 'Skillset'}"`,
+    title: `Dashboard | Edit "${project?.name || 'Project'}"`,
   }
 }
 
-export default async function EditSkillPage({ params }: EditSkillPageProps) {
+export default async function EditProjectPage({ params }: EditProjectPageProps) {
   const session = await auth()
 
   const host = headers().get('host')
   const protocol = headers().get('x-forwarded-proto')
 
   if (!session) {
-    redirect(`/login?callbackUrl=${protocol}://${host}/dashboard/skills/edit`)
+    redirect(`/login?callbackUrl=${protocol}://${host}/dashboard/projects/edit`)
   }
 
   const userRole = users.find((user) => user.email === session.user?.email)?.role || 'User'
@@ -40,16 +40,16 @@ export default async function EditSkillPage({ params }: EditSkillPageProps) {
     redirect('/dashboard')
   }
 
-  const skillset = (await sdk.Skillsets()).data.skillsets.find((skillset) => skillset.id === params.skillsetId)
-  if (!skillset) {
+  const project = (await sdk.Projects()).data.projects.find((project) => project.id === params.projectId)
+  if (!project) {
     return (
       <>
         <Heading level={6} className="py-4">
-          Some error occured while fetching skillset data. Make sure that this skillset exists and try again.
+          Some error occured while fetching project data. Make sure that this project exists and try again.
         </Heading>
         <div className="flex flex-wrap gap-3 mb-4">
-          <TransitionLink href="/dashboard/skills">
-            <Button variant="outline">Back to skills</Button>
+          <TransitionLink href="/dashboard/projects">
+            <Button variant="outline">Back to projects</Button>
           </TransitionLink>
         </div>
       </>
@@ -58,11 +58,11 @@ export default async function EditSkillPage({ params }: EditSkillPageProps) {
   return (
     <>
       <Heading level={6} className="py-4">
-        Edit {skillset?.name} Skillset content
+        Edit {project?.name} Project content
       </Heading>
       <p className="mb-4 text-zinc-500 dark:text-zinc-400">Fill below a form to edit this skillset.</p>
       <div className="flex flex-wrap gap-3 mb-4">
-        <EditSkillForm skillset={skillset} />
+        <EditProjectForm project={project} />
       </div>
     </>
   )

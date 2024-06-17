@@ -1,0 +1,23 @@
+# test mutation to update project without tags
+
+mutation updateProject(
+  $projectId: ID!
+  $projectName: String!
+  $projectDescription: String!
+  $projectDetails: String
+  $projectLink: String!
+) {
+  updateProject(
+    where: { id: $projectId }
+    data: { name: $projectName, description: $projectDescription, details: $projectDetails, link: $projectLink }
+  ) {
+    id
+    name
+    description
+    details
+    tags {
+      id
+      name
+    }
+  }
+}

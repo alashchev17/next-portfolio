@@ -5992,6 +5992,17 @@ export type CreateAssetMutationVariables = Exact<{
 
 export type CreateAssetMutation = { __typename?: 'Mutation', createAsset?: { __typename?: 'Asset', id: string, url: string, fileName: string, upload?: { __typename?: 'AssetUpload', error?: { __typename?: 'AssetUploadError', code: string, message: string } | null, requestPostData?: { __typename?: 'AssetUploadRequestPostData', algorithm: string, credential: string, date: string, key: string, securityToken?: string | null, signature: string, policy: string, url: string } | null } | null } | null };
 
+export type CreateProjectMutationVariables = Exact<{
+  projectName: Scalars['String']['input'];
+  projectDescription: Scalars['String']['input'];
+  projectDetails: Scalars['String']['input'];
+  projectLink: Scalars['String']['input'];
+  assetId: Scalars['ID']['input'];
+}>;
+
+
+export type CreateProjectMutation = { __typename?: 'Mutation', createProject?: { __typename?: 'Project', id: string, name?: string | null, description?: string | null, details?: string | null, link?: string | null, cover?: { __typename?: 'Asset', id: string, fileName: string, url: string } | null } | null };
+
 export type CreateSkillsetMutationVariables = Exact<{
   skillsetDescription: Scalars['String']['input'];
   skillsetName: Scalars['String']['input'];
@@ -6007,6 +6018,13 @@ export type DeleteAssetMutationVariables = Exact<{
 
 
 export type DeleteAssetMutation = { __typename?: 'Mutation', deleteAsset?: { __typename?: 'Asset', id: string, fileName: string, url: string } | null };
+
+export type DeleteProjectMutationVariables = Exact<{
+  projectId: Scalars['ID']['input'];
+}>;
+
+
+export type DeleteProjectMutation = { __typename?: 'Mutation', deleteProject?: { __typename?: 'Project', id: string, name?: string | null, description?: string | null, details?: string | null, link?: string | null } | null };
 
 export type DeleteSkillsetMutationVariables = Exact<{
   skillsetId: Scalars['ID']['input'];
@@ -6039,6 +6057,13 @@ export type PublishAssetMutationVariables = Exact<{
 
 export type PublishAssetMutation = { __typename?: 'Mutation', publishAsset?: { __typename?: 'Asset', id: string, fileName: string, url: string, height?: number | null, width?: number | null } | null };
 
+export type PublishProjectMutationVariables = Exact<{
+  projectId: Scalars['ID']['input'];
+}>;
+
+
+export type PublishProjectMutation = { __typename?: 'Mutation', publishProject?: { __typename?: 'Project', id: string, name?: string | null, description?: string | null, details?: string | null, tags: Array<{ __typename?: 'Tag', id: string, name?: string | null }> } | null };
+
 export type PublishSkillsetMutationVariables = Exact<{
   skillsetId: Scalars['ID']['input'];
 }>;
@@ -6050,6 +6075,17 @@ export type SkillsetsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type SkillsetsQuery = { __typename?: 'Query', skillsets: Array<{ __typename?: 'Skillset', id: string, name?: string | null, description?: string | null, iconImage?: { __typename?: 'Asset', id: string, url: string, fileName: string } | null }> };
+
+export type UpdateProjectMutationVariables = Exact<{
+  projectId: Scalars['ID']['input'];
+  projectName: Scalars['String']['input'];
+  projectDescription: Scalars['String']['input'];
+  projectDetails?: InputMaybe<Scalars['String']['input']>;
+  projectLink: Scalars['String']['input'];
+}>;
+
+
+export type UpdateProjectMutation = { __typename?: 'Mutation', updateProject?: { __typename?: 'Project', id: string, name?: string | null, description?: string | null, details?: string | null, tags: Array<{ __typename?: 'Tag', id: string, name?: string | null }> } | null };
 
 export type UpdateSkillsetMutationVariables = Exact<{
   skillsetId: Scalars['ID']['input'];
@@ -6126,6 +6162,24 @@ export const CreateAssetDocument = gql`
   }
 }
     `;
+export const CreateProjectDocument = gql`
+    mutation createProject($projectName: String!, $projectDescription: String!, $projectDetails: String!, $projectLink: String!, $assetId: ID!) {
+  createProject(
+    data: {name: $projectName, description: $projectDescription, details: $projectDetails, link: $projectLink, cover: {connect: {id: $assetId}}}
+  ) {
+    id
+    name
+    description
+    details
+    link
+    cover {
+      id
+      fileName
+      url
+    }
+  }
+}
+    `;
 export const CreateSkillsetDocument = gql`
     mutation createSkillset($skillsetDescription: String!, $skillsetName: String!, $assetId: ID!) {
   createSkillset(
@@ -6148,6 +6202,17 @@ export const DeleteAssetDocument = gql`
     id
     fileName
     url
+  }
+}
+    `;
+export const DeleteProjectDocument = gql`
+    mutation deleteProject($projectId: ID!) {
+  deleteProject(where: {id: $projectId}) {
+    id
+    name
+    description
+    details
+    link
   }
 }
     `;
@@ -6225,6 +6290,20 @@ export const PublishAssetDocument = gql`
   }
 }
     `;
+export const PublishProjectDocument = gql`
+    mutation publishProject($projectId: ID!) {
+  publishProject(to: PUBLISHED, where: {id: $projectId}) {
+    id
+    name
+    description
+    details
+    tags {
+      id
+      name
+    }
+  }
+}
+    `;
 export const PublishSkillsetDocument = gql`
     mutation publishSkillset($skillsetId: ID!) {
   publishSkillset(to: PUBLISHED, where: {id: $skillsetId}) {
@@ -6253,6 +6332,23 @@ export const SkillsetsDocument = gql`
   }
 }
     `;
+export const UpdateProjectDocument = gql`
+    mutation updateProject($projectId: ID!, $projectName: String!, $projectDescription: String!, $projectDetails: String, $projectLink: String!) {
+  updateProject(
+    where: {id: $projectId}
+    data: {name: $projectName, description: $projectDescription, details: $projectDetails, link: $projectLink}
+  ) {
+    id
+    name
+    description
+    details
+    tags {
+      id
+      name
+    }
+  }
+}
+    `;
 export const UpdateSkillsetDocument = gql`
     mutation updateSkillset($skillsetId: ID!, $skillsetName: String!, $skillsetDescription: String!) {
   updateSkillset(
@@ -6272,15 +6368,19 @@ export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, str
 const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType, _variables) => action();
 const AllDataDocumentString = print(AllDataDocument);
 const CreateAssetDocumentString = print(CreateAssetDocument);
+const CreateProjectDocumentString = print(CreateProjectDocument);
 const CreateSkillsetDocumentString = print(CreateSkillsetDocument);
 const DeleteAssetDocumentString = print(DeleteAssetDocument);
+const DeleteProjectDocumentString = print(DeleteProjectDocument);
 const DeleteSkillsetDocumentString = print(DeleteSkillsetDocument);
 const ExperiencesDocumentString = print(ExperiencesDocument);
 const GetProjectByProjectNameDocumentString = print(GetProjectByProjectNameDocument);
 const ProjectsDocumentString = print(ProjectsDocument);
 const PublishAssetDocumentString = print(PublishAssetDocument);
+const PublishProjectDocumentString = print(PublishProjectDocument);
 const PublishSkillsetDocumentString = print(PublishSkillsetDocument);
 const SkillsetsDocumentString = print(SkillsetsDocument);
+const UpdateProjectDocumentString = print(UpdateProjectDocument);
 const UpdateSkillsetDocumentString = print(UpdateSkillsetDocument);
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
@@ -6290,11 +6390,17 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     createAsset(variables: CreateAssetMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: CreateAssetMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<CreateAssetMutation>(CreateAssetDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createAsset', 'mutation', variables);
     },
+    createProject(variables: CreateProjectMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: CreateProjectMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<CreateProjectMutation>(CreateProjectDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createProject', 'mutation', variables);
+    },
     createSkillset(variables: CreateSkillsetMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: CreateSkillsetMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<CreateSkillsetMutation>(CreateSkillsetDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createSkillset', 'mutation', variables);
     },
     deleteAsset(variables: DeleteAssetMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: DeleteAssetMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<DeleteAssetMutation>(DeleteAssetDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'deleteAsset', 'mutation', variables);
+    },
+    deleteProject(variables: DeleteProjectMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: DeleteProjectMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<DeleteProjectMutation>(DeleteProjectDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'deleteProject', 'mutation', variables);
     },
     deleteSkillset(variables: DeleteSkillsetMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: DeleteSkillsetMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<DeleteSkillsetMutation>(DeleteSkillsetDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'deleteSkillset', 'mutation', variables);
@@ -6311,11 +6417,17 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     publishAsset(variables: PublishAssetMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: PublishAssetMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<PublishAssetMutation>(PublishAssetDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'publishAsset', 'mutation', variables);
     },
+    publishProject(variables: PublishProjectMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: PublishProjectMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<PublishProjectMutation>(PublishProjectDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'publishProject', 'mutation', variables);
+    },
     publishSkillset(variables: PublishSkillsetMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: PublishSkillsetMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<PublishSkillsetMutation>(PublishSkillsetDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'publishSkillset', 'mutation', variables);
     },
     Skillsets(variables?: SkillsetsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: SkillsetsQuery; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<SkillsetsQuery>(SkillsetsDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Skillsets', 'query', variables);
+    },
+    updateProject(variables: UpdateProjectMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: UpdateProjectMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<UpdateProjectMutation>(UpdateProjectDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateProject', 'mutation', variables);
     },
     updateSkillset(variables: UpdateSkillsetMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: UpdateSkillsetMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<UpdateSkillsetMutation>(UpdateSkillsetDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateSkillset', 'mutation', variables);
