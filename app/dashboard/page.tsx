@@ -1,13 +1,16 @@
-import { redirect } from 'next/navigation'
 import type { Metadata } from 'next'
+import { redirect } from 'next/navigation'
+import { headers } from 'next/headers'
 
 import { auth } from '@/auth'
+import { users } from '@/database/users'
+import { DASHBOARD_STATISTICS_ITEMS } from '@/constants'
 
 import { Heading } from '@/components/UI/Heading'
 import { Button } from '@/components/UI/Button'
 import { TransitionLink } from '@/components/TransitionLink'
-import { headers } from 'next/headers'
-import { users } from '@/database/users'
+import { Statistics } from '@/components/Dashboard/Statistics'
+import { sdk } from '@/lib/client'
 
 export function generateMetadata(): Metadata {
   return {
@@ -43,11 +46,20 @@ export default async function DashboardPage() {
 
   const filteredDashboardLinks = dashboardLinks.filter((link) => link.role.includes(userRole))
 
+  const { projects, skillsets, experiences } = (await sdk.AllData()).data
+
+  if (!projects || !skillsets || !experiences) return null
+
   return (
     <>
       <Heading level={4} className="py-4 border-b dark:border-zinc-700">
         Welcome Back, {session?.user?.name}!
       </Heading>
+      <Statistics
+        titles={DASHBOARD_STATISTICS_ITEMS.titles}
+        descriptions={DASHBOARD_STATISTICS_ITEMS.descriptions}
+        contents={[projects.length.toString(), skillsets.length.toString(), experiences.length.toString()]}
+      />
       <Heading level={6} className="py-4 border-b dark:border-zinc-700">
         Role: {userRole || 'User'}
       </Heading>

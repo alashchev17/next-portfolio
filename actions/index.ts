@@ -197,22 +197,33 @@ export const addProject = async (
 
   // Creating a new project based on received formData from form and its Asset
 
-  const createProjectResponse = await sdk.createProject({
-    projectName: title,
-    projectDescription: description,
-    projectDetails: details,
-    projectLink: link,
-    assetId: assetResponse.data?.createAsset?.id as string,
-  })
+  let createProjectResponseData
+
+  try {
+    const createProjectResponse = await sdk.createProject({
+      projectName: title,
+      projectDescription: description,
+      projectDetails: details,
+      projectLink: link,
+      assetId: assetResponse.data?.createAsset?.id as string,
+    })
+    createProjectResponseData = createProjectResponse.data.createProject
+  } catch (e) {
+    console.log(`[SERVER]: Some error occured, error: ${JSON.stringify(e)}`)
+    return Promise.resolve({
+      message: 'Some error occurred while creating this project. Try again or contact support',
+      field: 'image',
+    })
+  }
 
   // Publish Project and its Asset
 
   try {
-    await sdk.publishProject({ projectId: createProjectResponse.data?.createProject?.id as string })
+    await sdk.publishProject({ projectId: createProjectResponseData?.id as string })
   } catch (e) {
     // deleting draft asset and project if publish failed
     await sdk.deleteAsset({ assetId: assetResponse.data.createAsset?.id as string })
-    await sdk.deleteProject({ projectId: createProjectResponse.data.createProject?.id as string })
+    await sdk.deleteProject({ projectId: createProjectResponseData?.id as string })
 
     return Promise.resolve({
       message: 'Some error occurred while publishing this project. Try again or contact support',
@@ -225,7 +236,7 @@ export const addProject = async (
   } catch (e) {
     // deleting draft asset and skillset if publish failed
     await sdk.deleteAsset({ assetId: assetResponse.data.createAsset?.id as string })
-    await sdk.deleteProject({ projectId: createProjectResponse.data.createProject?.id as string })
+    await sdk.deleteProject({ projectId: createProjectResponseData?.id as string })
 
     return Promise.resolve({
       message: 'Some error occurred while publishing image for this project. Try again or contact support',

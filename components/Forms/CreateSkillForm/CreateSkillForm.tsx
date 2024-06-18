@@ -19,8 +19,11 @@ const formSchema = z.object({
   description: z.string().min(10, 'Description must be at least 10 characters long'),
   image: z
     .instanceof(FileList, { message: 'File is required' })
-    .refine((fileList: FileList) => fileList?.[0].size < MAX_IMAGE_FILE_SIZE, 'Max size is 5 MB')
-    .refine((fileList: FileList) => checkFileType(fileList?.[0]), 'Only .jpg and .png formats are supported.'),
+    .refine((fileList: FileList) => fileList.length > 0, { message: 'File is required' })
+    .refine((fileList: FileList) => fileList.length > 0 && fileList?.[0].size < MAX_IMAGE_FILE_SIZE, { message: 'Max size is 5 MB.' })
+    .refine((fileList: FileList) => fileList.length > 0 && checkFileType(fileList?.[0]), {
+      message: 'Only .jpg and .png formats are supported.',
+    }),
 })
 
 export const CreateSkillForm = () => {

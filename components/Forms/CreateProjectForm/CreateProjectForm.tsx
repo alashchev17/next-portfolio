@@ -10,7 +10,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from '@/components/UI/Input'
 import { Button } from '@/components/UI/Button'
 
-import { MAX_IMAGE_FILE_SIZE } from '@/constants'
+import { MAX_IMAGE_FILE_SIZE, URL_REGEX } from '@/constants'
 import { checkFileType } from '@/lib/utils'
 import { addProject } from '@/actions'
 
@@ -18,11 +18,19 @@ const formSchema = z.object({
   title: z.string().min(3, 'Title must be at least 3 characters long'),
   description: z.string().min(10, 'Description must be at least 10 characters long'),
   details: z.string().min(20, 'Project details must be at least 20 characters long'),
-  link: z.string().url('Link must be a valid URL'),
+  link: z
+    .string()
+    .url('Link should be a valid URL')
+    .refine((value) => URL_REGEX.test(value), {
+      message: 'Link should be a valid URL',
+    }),
   image: z
     .instanceof(FileList, { message: 'File is required' })
-    .refine((fileList: FileList) => fileList?.[0].size < MAX_IMAGE_FILE_SIZE, 'Max size is 5 MB')
-    .refine((fileList: FileList) => checkFileType(fileList?.[0]), 'Only .jpg and .png formats are supported.'),
+    .refine((fileList: FileList) => fileList.length > 0, { message: 'File is required' })
+    .refine((fileList: FileList) => fileList.length > 0 && fileList?.[0].size < MAX_IMAGE_FILE_SIZE, { message: 'Max size is 5 MB.' })
+    .refine((fileList: FileList) => fileList.length > 0 && checkFileType(fileList?.[0]), {
+      message: 'Only .jpg and .png formats are supported.',
+    }),
 })
 
 export const CreateProjectForm = () => {

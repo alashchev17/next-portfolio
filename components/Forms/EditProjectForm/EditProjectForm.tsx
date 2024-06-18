@@ -1,18 +1,20 @@
 'use client'
 
+import type { ProjectsQuery } from '@/generated/graphql'
+
+import Image from 'next/image'
 import { useState } from 'react'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/UI/Form'
-import { Input } from '@/components/UI/Input'
-import { Button } from '@/components/UI/Button'
-
 import { updateProject } from '@/actions'
-import { ProjectsQuery } from '@/generated/graphql'
-import Image from 'next/image'
+import { URL_REGEX } from '@/constants'
+
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/UI/Form'
+import { Button } from '@/components/UI/Button'
+import { Input } from '@/components/UI/Input'
 import { Tag } from '@/components/UI/Tag'
 
 type EditSkillFormProps = {
@@ -23,7 +25,12 @@ const formSchema = z.object({
   title: z.string().min(3, 'Title must be at least 3 characters long'),
   description: z.string().min(10, 'Description must be at least 10 characters long'),
   details: z.string().min(20, 'Details field must be at least 20 characters long'),
-  link: z.string().url('Link must be a valid URL'),
+  link: z
+    .string()
+    .url()
+    .refine((value) => URL_REGEX.test(value), {
+      message: 'Invalid URL',
+    }),
 })
 
 export const EditProjectForm = ({ project }: EditSkillFormProps) => {

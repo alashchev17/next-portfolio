@@ -30,7 +30,7 @@ export const DashboardProject = ({ project }: DashboardProjectProps) => {
     const response = await sdk.deleteProject({ projectId: id })
 
     if (!response.errors) {
-      toast.success(`Skillset "${project.name}" deleted!`)
+      toast.success(`Project "${project.name}" deleted!`)
       router.refresh()
     }
   }
