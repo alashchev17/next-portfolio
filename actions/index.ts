@@ -4,6 +4,8 @@ import { users } from '@/database/users'
 import { sdk } from '@/lib/client'
 import { revalidatePath } from 'next/cache'
 
+import type { CreateProjectMutation } from '@/generated/graphql'
+
 export const login = async (values: {
   email: string
   password: string
@@ -197,7 +199,7 @@ export const addProject = async (
 
   // Creating a new project based on received formData from form and its Asset
 
-  let createProjectResponseData
+  let createProjectResponseData = {} as NonNullable<CreateProjectMutation['createProject']>
 
   try {
     const createProjectResponse = await sdk.createProject({
@@ -207,9 +209,10 @@ export const addProject = async (
       projectLink: link,
       assetId: assetResponse.data?.createAsset?.id as string,
     })
-    createProjectResponseData = createProjectResponse.data.createProject
+    if (createProjectResponse.data.createProject) {
+      createProjectResponseData = createProjectResponse.data.createProject
+    }
   } catch (e) {
-    console.log(`[SERVER]: Some error occured, error: ${JSON.stringify(e)}`)
     return Promise.resolve({
       message: 'Some error occurred while creating this project. Try again or contact support',
       field: 'image',
@@ -218,33 +221,37 @@ export const addProject = async (
 
   // Publish Project and its Asset
 
-  try {
-    await sdk.publishProject({ projectId: createProjectResponseData?.id as string })
-  } catch (e) {
-    // deleting draft asset and project if publish failed
-    await sdk.deleteAsset({ assetId: assetResponse.data.createAsset?.id as string })
-    await sdk.deleteProject({ projectId: createProjectResponseData?.id as string })
+  if (createProjectResponseData) {
+    try {
+      await sdk.publishProject({ projectId: createProjectResponseData.id as string })
+    } catch (e) {
+      // deleting draft asset and project if publish failed
+      await sdk.deleteAsset({ assetId: assetResponse.data.createAsset?.id as string })
+      await sdk.deleteProject({ projectId: createProjectResponseData?.id as string })
 
-    return Promise.resolve({
-      message: 'Some error occurred while publishing this project. Try again or contact support',
-      field: 'image',
-    })
+      return Promise.resolve({
+        message: 'Some error occurred while publishing this project. Try again or contact support',
+        field: 'image',
+      })
+    }
   }
 
-  try {
-    await sdk.publishAsset({ assetId: assetResponse.data.createAsset?.id as string })
-  } catch (e) {
-    // deleting draft asset and skillset if publish failed
-    await sdk.deleteAsset({ assetId: assetResponse.data.createAsset?.id as string })
-    await sdk.deleteProject({ projectId: createProjectResponseData?.id as string })
+  if (createProjectResponseData) {
+    try {
+      await sdk.publishAsset({ assetId: assetResponse.data.createAsset?.id as string })
+    } catch (e) {
+      // deleting draft asset and skillset if publish failed
+      await sdk.deleteAsset({ assetId: assetResponse.data.createAsset?.id as string })
+      await sdk.deleteProject({ projectId: createProjectResponseData?.id as string })
 
-    return Promise.resolve({
-      message: 'Some error occurred while publishing image for this project. Try again or contact support',
-      field: 'image',
-    })
+      return Promise.resolve({
+        message: 'Some error occurred while publishing image for this project. Try again or contact support',
+        field: 'image',
+      })
+    }
+
+    return Promise.resolve(undefined)
   }
-
-  return Promise.resolve(undefined)
 }
 
 export const updateProject = async (
