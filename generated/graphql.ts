@@ -6036,7 +6036,7 @@ export type DeleteSkillsetMutation = { __typename?: 'Mutation', deleteSkillset?:
 export type ExperiencesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ExperiencesQuery = { __typename?: 'Query', experiences: Array<{ __typename?: 'Experience', name?: string | null, description?: string | null, dateStart?: any | null, dateOver?: any | null, location?: string | null }> };
+export type ExperiencesQuery = { __typename?: 'Query', experiences: Array<{ __typename?: 'Experience', id: string, name?: string | null, description?: string | null, dateStart?: any | null, dateOver?: any | null, location?: string | null }> };
 
 export type GetProjectByProjectNameQueryVariables = Exact<{
   name: Scalars['String']['input'];
@@ -6228,6 +6228,7 @@ export const DeleteSkillsetDocument = gql`
 export const ExperiencesDocument = gql`
     query Experiences {
   experiences {
+    id
     name
     description
     dateStart

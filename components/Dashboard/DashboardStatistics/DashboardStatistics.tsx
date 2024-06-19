@@ -6,9 +6,10 @@ import { Button } from '@/components/UI/Button'
 
 type DashboardStatisticsProps = {
   contents: number[]
+  userRole: string
 }
 
-export const DashboardStatistics = ({ contents }: DashboardStatisticsProps) => {
+export const DashboardStatistics = ({ contents, userRole }: DashboardStatisticsProps) => {
   return (
     <div className="flex flex-wrap justify-between pt-6">
       {DASHBOARD_STATISTICS_ITEMS.titles.map((title, i) => (
@@ -23,11 +24,15 @@ export const DashboardStatistics = ({ contents }: DashboardStatisticsProps) => {
             </p>
           </CardContent>
           <CardFooter>
-            <TransitionLink href={DASHBOARD_STATISTICS_ITEMS.links[i]}>
-              <Button variant="outline" disabled={DASHBOARD_STATISTICS_ITEMS.links[i] === '/dashboard/experiences'}>
-                View All
+            {DASHBOARD_STATISTICS_ITEMS.permissions[i].role.includes(userRole) ? (
+              <TransitionLink href={DASHBOARD_STATISTICS_ITEMS.links[i]}>
+                <Button variant="outline">View All</Button>
+              </TransitionLink>
+            ) : (
+              <Button variant="outline" disabled={!DASHBOARD_STATISTICS_ITEMS.permissions[i].role.includes(userRole)}>
+                Insufficient permissions
               </Button>
-            </TransitionLink>
+            )}
           </CardFooter>
         </Card>
       ))}

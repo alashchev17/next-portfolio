@@ -32,12 +32,26 @@ export const MAX_IMAGE_FILE_SIZE = 1024 * 1024 * 5
 export const ACCEPTED_IMAGE_MIME_TYPES = ['image/png', 'image/jpg', 'image/jpeg']
 
 export const DASHBOARD_STATISTICS_ITEMS = {
-  titles: ['Projects', 'Skillsets', 'Experiences (coming soon)'],
+  titles: ['Projects', 'Skillsets', 'Experiences'],
   descriptions: [
     'Statistics for amount of existing projects',
     'Statistics for amount of existing skillsets',
     'Statistics for amount of existing experiences',
   ],
   links: ['/dashboard/projects', '/dashboard/skills', '/dashboard/experiences'],
+  permissions: [
+    {
+      id: 1,
+      role: ['Admin', 'Moderator'],
+    },
+    {
+      id: 2,
+      role: ['Admin'],
+    },
+    {
+      id: 3,
+      role: ['Admin'],
+    },
+  ],
 }
 export const URL_REGEX = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}(\/.*)?$/

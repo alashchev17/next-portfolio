@@ -35,7 +35,9 @@ export default async function DashboardPage() {
       <Heading level={4} className="py-4 border-b dark:border-zinc-700">
         Welcome Back, {session?.user?.name}!
       </Heading>
-      {userRole !== 'User' && <DashboardStatistics contents={[projects.length, skillsets.length, experiences.length]} />}
+      {userRole !== 'User' && (
+        <DashboardStatistics contents={[projects.length, skillsets.length, experiences.length]} userRole={userRole} />
+      )}
       <Heading level={6} className="py-4">
         Role: {userRole || 'User'}
       </Heading>
