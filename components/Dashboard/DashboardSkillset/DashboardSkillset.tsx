@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import { sdk } from '@/lib/client'
+import { refreshPath } from '@/actions'
 
 import { Heading } from '@/components/UI/Heading'
 import { Button } from '@/components/UI/Button'
@@ -30,6 +31,7 @@ export const DashboardSkillset = ({ skillset }: DashboardSkillsetProps) => {
 
     if (!response.errors) {
       toast.success(`Skillset "${skillset.name}" deleted!`)
+      refreshPath('/dashboard/skills')
       router.refresh()
     }
   }

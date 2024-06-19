@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import { sdk } from '@/lib/client'
+import { refreshPath } from '@/actions'
 
 import { Button } from '@/components/UI/Button'
 import { Heading } from '@/components/UI/Heading'
@@ -31,6 +32,7 @@ export const DashboardProject = ({ project }: DashboardProjectProps) => {
 
     if (!response.errors) {
       toast.success(`Project "${project.name}" deleted!`)
+      refreshPath('/dashboard/projects')
       router.refresh()
     }
   }

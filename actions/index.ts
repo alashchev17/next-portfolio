@@ -299,3 +299,7 @@ export const updateProject = async (
     newData: { title, description, details, link },
   })
 }
+
+export const refreshPath = async (path: string) => {
+  revalidatePath(path)
+}
