@@ -2,15 +2,15 @@
 
 import type { ExperiencesQuery } from '@/generated/graphql'
 
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+// import { useRouter } from 'next/navigation'
+// import { useState } from 'react'
 
-import { sdk } from '@/lib/client'
+// import { sdk } from '@/lib/client'
 
 import { Button } from '@/components/UI/Button'
 import { Heading } from '@/components/UI/Heading'
 import { TransitionLink } from '@/components/TransitionLink'
-import { toast } from 'sonner'
+// import { toast } from 'sonner'
 
 interface DashboardProjectProps {
   experience: NonNullable<ExperiencesQuery['experiences']>[number]
@@ -18,20 +18,20 @@ interface DashboardProjectProps {
 
 export const DashboardExperience = ({ experience }: DashboardProjectProps) => {
   // const router = useRouter()
-  const [isExperienceDeleting, setIsExperienceDeleting] = useState(false)
+  // const [isExperienceDeleting, setIsExperienceDeleting] = useState(false)
 
-  const handleDeleteExperience = async (id: string) => {
-    // setIsExperienceDeleting(true)
-    // if (experience.cover) {
-    //   await sdk.deleteAsset({ assetId: project.cover.id as string })
-    // }
-    // const response = await sdk.deleteProject({ projectId: id })
+  // const handleDeleteExperience = async (id: string) => {
+  //   // setIsExperienceDeleting(true)
+  //   // if (experience.cover) {
+  //   //   await sdk.deleteAsset({ assetId: project.cover.id as string })
+  //   // }
+  //   // const response = await sdk.deleteProject({ projectId: id })
 
-    // if (!response.errors) {
-    //   router.refresh()
-    // }
-    toast.success(`Experience "${experience.name}" deleted!`)
-  }
+  //   // if (!response.errors) {
+  //   //   router.refresh()
+  //   // }
+  //   toast.success(`Experience "${experience.name}" deleted!`)
+  // }
 
   return (
     <div className="flex flex-col flex-start gap-2 border-2 p-8 shadow-lg border-zinc-500 dark:border-zinc-700">
@@ -49,9 +49,10 @@ export const DashboardExperience = ({ experience }: DashboardProjectProps) => {
             <TransitionLink href={`/dashboard/experiences/edit/${experience.id}`}>
               <Button variant="default">Edit information</Button>
             </TransitionLink>
-            <Button variant="destructive" onClick={() => handleDeleteExperience(experience.id)} disabled={isExperienceDeleting}>
+            {/* <Button variant="destructive" onClick={() => handleDeleteExperience(experience.id)} disabled={isExperienceDeleting}>
               {isExperienceDeleting ? 'Deleting experience...' : 'Delete experience'}
-            </Button>
+            </Button> */}
+            <Button variant="destructive">Delete experience</Button>
           </div>
         </div>
       </div>
