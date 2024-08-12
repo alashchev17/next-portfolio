@@ -16,7 +16,7 @@ const RobotoFlexFont = Roboto_Flex({
 })
 
 export const metadata: Metadata = {
-  title: 'Lashchev Development | Home',
+  title: 'Andrii Lashchov | Home',
 }
 
 export default function RootLayout({
